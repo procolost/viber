@@ -65,6 +65,13 @@ type VideoMessage struct {
 	Thumbnail string `json:"thumbnail,omitempty"`
 	Size      uint   `json:"size"`
 	Duration  uint   `json:"duration,omitempty"`
+}	
+
+type FileMessage struct {
+	TextMessage
+	Media     string `json:"media"`
+	Size      uint   `json:"size"`
+	FileName 	string `json:"file_name"`
 }
 
 // MessageType for viber messaging
@@ -140,6 +147,33 @@ func (v *Viber) NewPictureMessage(msg string, url string, thumbURL string) *Pict
 	}
 }
 
+// NewVideoMessage for viber
+func (v *Viber) NewVideoMessage(msg string, url string, size uint) *VideoMessage {
+	return &VideoMessage{
+		TextMessage: TextMessage{
+			Sender: v.Sender, 
+			Type: TypeVideoMessage,
+			Text: msg,
+		},
+		Media: url,
+		Size: size,
+	}
+}
+
+// NewVideoMessage for viber
+func (v *Viber) NewFileMessage(msg string, url string, size uint, filename string) *FileMessage {
+	return &FileMessage{
+		TextMessage: TextMessage{
+			Sender: v.Sender, 
+			Type: TypeVideoMessage,
+			Text: msg,
+		},
+		Media: url,
+		Size: size,
+		FileName: filename,
+	}
+}
+
 // SendTextMessage to reciever, returns message token
 func (v *Viber) SendTextMessage(receiver string, msg string) (msgToken uint64, err error) {
 	return v.SendMessage(receiver, v.NewTextMessage(msg))
@@ -153,6 +187,16 @@ func (v *Viber) SendURLMessage(receiver string, msg string, url string) (msgToke
 // SendPictureMessage to receiver, returns message token
 func (v *Viber) SendPictureMessage(receiver string, msg string, url string, thumbURL string) (token uint64, err error) {
 	return v.SendMessage(receiver, v.NewPictureMessage(msg, url, thumbURL))
+}
+
+// SendVideoMessage to receiver, returns message token
+func (v *Viber) SendVideoMessage(receiver string, msg string, url string, size uint) (token uint64, err error) {
+	return v.SendMessage(receiver, v.NewVideoMessage(msg, url, size))
+}
+
+// SendVideoMessage to receiver, returns message token
+func (v *Viber) SendFileMessage(receiver string, msg string, url string, size uint, filename string) (token uint64, err error) {
+	return v.SendMessage(receiver, v.NewFileMessage(msg, url, size, filename))
 }
 
 // SendPublicMessage from public account
