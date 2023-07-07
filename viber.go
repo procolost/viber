@@ -90,10 +90,10 @@ func (v *Viber) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	Log.Println("Received from Viber:", string(body))
 
-	if !v.checkHMAC(body, r.Header.Get("X-Viber-Content-Signature")) {
-		Log.Println("X-Viber-Content-Signature doesn't match")
-		return
-	}
+	// if !v.checkHMAC(body, r.Header.Get("X-Viber-Content-Signature")) {
+	// 	Log.Println("X-Viber-Content-Signature doesn't match")
+	// 	return
+	// }
 
 	var e event
 	if err := json.Unmarshal(body, &e); err != nil {
