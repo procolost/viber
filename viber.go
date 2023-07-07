@@ -8,10 +8,10 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"regexp"
 	"strings"
 	"time"
-	"os"
 )
 
 // Sender structure
@@ -60,7 +60,7 @@ type Viber struct {
 
 var (
 	// Log errors, set to logger if you want to log package activities and errors
-	Log               = log.New(os.stdout, "Viber >>", 0)
+	Log               = log.New(os.Stderr, "Viber >>", 0)
 	regexpPeekMsgType = regexp.MustCompile("\"type\":\\s*\"([^\"]+)\"")
 )
 
